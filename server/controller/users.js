@@ -4,13 +4,13 @@ import jsonwebtoken from 'jsonwebtoken'
 import model from '../db'
 import { secret } from '../../config/index'
 
-const User = mongoose.model('User');
 
 
 class UserController {
     async login(ctx){
         try{
             const { body } = ctx.request;
+            console.log('register-login-',body)
             const user = await model.User.findOne({loginid:body.loginid})
             if(!user){
                 ctx.status = 401;
@@ -45,7 +45,7 @@ class UserController {
         try{
             //console.log('register-request',ctx.request)
             const { body } = ctx.request;
-            console.log('register-body',body)
+            console.log('register-body-',body)
             if(!body.loginid || !body.password){
                 ctx.status = 400;
                 ctx.body = {
@@ -75,6 +75,34 @@ class UserController {
                 ctx.status = 406;
                 ctx.body = {
                     message: '用户名已经存在',
+                }
+            }
+        } catch (error) {
+            console.log('register-catch-',error)
+            ctx.throw(500)
+        }
+    }
+    async userList(ctx){
+        try{
+            console.log('userList-query',ctx.params)
+            let {page=1,count=10,keword=""} = ctx.query;
+            page = (Number(page)-1)||0;
+            let pageCount = Number(count)||10;
+            let startNum = page * count;
+            console.log('[userList-params]: startNum=',startNum,'pageCount=',pageCount,'keword=',keword)
+            let filter = {};
+            let userList = await model.User.find(filter).skip(startNum).limit(pageCount).sort({'create_time': -1});
+            console.log('userList-end-',userList)
+            if(userList.length){
+                ctx.status = 200;
+                ctx.body = {
+                    message: '查询成功',
+                    userList:userList
+                }
+            }else{
+                ctx.status = 200;
+                ctx.body = {
+                    userList: [],
                 }
             }
         } catch (error) {

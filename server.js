@@ -6,9 +6,11 @@ import logger from 'koa-logger'
 import  mongoose from 'mongoose'
 
 import errorHandle from './server/middlewares/errorHandle';
-import { port, connexionString, secret } from './config/index'
+import { port, connexionString, secret,publicApi } from './config/index'
 import routerList from './server/routes'
 
+//规定公共接口
+const jwtApiFilter = jwt({secret:secret}).unless({path:publicApi});
 const app = new Koa();
 
 //mongoose.connect(connexionString)
@@ -17,20 +19,21 @@ const app = new Koa();
 
 //const publicKey = 'shared-secret';
 //const publicKey = fs.readFileSync('/path/to/public.pub');
-//const publicApi = [/\/register/,/\/login/];
-//const jwtFilter = jwt({secret:publicKey}).unless({path:publicApi});
+
+
 
 
 app
-    .use(errorHandle)
-    //.use(jwtFilter)
+    //.use(errorHandle)
+    //.use(jwtApiFilter)
     .use(logger())
     .use(bodyParser())
     //.use(customLog)
-
+/*
 app.on('error', function(err, ctx){
     console.log('koa server error', err);
 });
+*/
 //挂载路由列表
 routerList(app)
 
