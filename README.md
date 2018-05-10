@@ -42,6 +42,22 @@ npm install <name> --save--dev
 ```
 **ps:windows下cmd执行``tree /f <dirname>``命令就可以生成目录及文件树**
 
+#### 登录和注册接口
+
+controller目录新建users.js,登录和注册相关操作,以下是部分代码
+```
+class UserController {
+    async login(ctx){
+        ...
+    }
+    async register(ctx){
+        ...
+    }
+}
+export default new UserController();
+```
+
+
 #### 创建登录api路由[``routes/user.js``]
 ```
 import Router from 'koa-router'
@@ -118,6 +134,33 @@ Mongodb started successfully
 
 
 
+## 前端页面
+
+安装vue和饿了么的Element-UI
+
+- vue
+- vue-router
+- element-ui
+```
+npm i vue element-ui --save
+```
+
+
+
+
+
+## 知识点
+动态路由
+```
+//请求方式   http://域名/product/123
+router.get('/product/:aid',async (ctx)=>{
+   console.log(ctx.params); //{ aid: '123' }  //获取动态路由的数据
+   ctx.body='这是商品页面';
+})
+```
+
+
+
 
 
 
@@ -129,8 +172,21 @@ Mongodb started successfully
 
 https://ykloveyxk.github.io/2017/03/21/vue-login-通过一个项目带你走进vue全栈开发/
 
+https://github.com/stzhongjie/vue-login
+
+主要
+
 https://molunerfinn.com/Vue+Koa/
 
 https://github.com/Molunerfinn/vue-koa-demo
 
+https://github.com/superman66/vue-axios-github
 
+koa异常处理
+https://www.jianshu.com/p/6b816c609669
+
+vue实例
+http://xgfe.github.io/2016/11/09/zhouxiong/vue-in-action-vue-basis/
+
+vue-cli
+https://www.jianshu.com/p/1626b8643676
